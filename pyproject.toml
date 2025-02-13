@@ -1,14 +1,32 @@
-[project]
+[tool.poetry]
 name = "kochan"
 version = "1.0.0"
 description = "The reborn of 4chan Era"
-authors = [{ name = "kaeeraa", email = "kaeeraa@nebula-nook.ru" }]
-license = { file = "LICENSE" }
+authors = ["kaeeraa <kaeeraa@nebula-nook.ru>"]
+license = "GPL-3.0-or-later"
 readme = "docs/README.md"
-requires-python = ">=3.12"
-dependencies = ["flask (>=3.1.0,<4.0.0)"]
+
+classifiers = [
+    "Development Status :: 1 - Planning",
+    "Environment :: Web Environment",
+    "Framework :: Flask",
+    "Intended Audience :: End Users/Desktop",
+    "License :: OSI Approved :: GNU General Public License v3 (GPLv3)",
+    "Natural Language :: English",
+    "Operating System :: Unix",
+    "Programming Language :: Cython",
+    "Programming Language :: Python",
+    "Topic :: Communications",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content :: Message Boards",
+]
+
+build = "./build.py"
+
+[tool.poetry.dependencies]
+python = ">=3.12"
+flask = "^3.1.0"
 
 
 [build-system]
-requires = ["poetry-core>=2.0.0,<3.0.0"]
+requires = ["poetry-core>=1.0.0", "setuptools", "Cython"]
 build-backend = "poetry.core.masonry.api"
