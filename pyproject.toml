@@ -3,7 +3,7 @@ name = "kochan"
 version = "1.0.0"
 description = "The reborn of 4chan Era"
 authors = [{ name = "kaeeraa", email = "kaeeraa@nebula-nook.ru" }]
-license = { text = "GPLv3-only" }
+license = { file = "LICENSE" }
 readme = "docs/README.md"
 requires-python = ">=3.12"
 dependencies = []
