@@ -22,9 +22,13 @@ classifiers = [
 
 build = "./build.py"
 
+[tool.poetry.scripts]
+kochan = 'kochan.main:run'
+
 [tool.poetry.dependencies]
 python = ">=3.12"
 flask = "^3.1.0"
+gunicorn = "^23.0.0"
 
 
 [build-system]
