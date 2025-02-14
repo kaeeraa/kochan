@@ -41,17 +41,11 @@
 
       forAllSystems = forEachSystem systems;
 
-    in
-    {
-      overlay = final: prev: {
+      mkPackage = final: {
         kochan = final.poetry2nix.mkPoetryApplication {
           projectDir = self;
           preferWheels = true;
           python = final.${pythonVer};
-
-          preBuild = ''
-            cp ${self}/build.py ./build.py
-          '';
 
           overrides = final.poetry2nix.overrides.withDefaults (
             self: super: {
@@ -60,25 +54,33 @@
                   final.cython
                   final.gcc
                   final.pkg-config
-                  final.python312Packages.poetry-core
-                  final.python312Packages.setuptools
                 ];
-                CYTHON_INCLUDE_DIRS = "${final.${pythonVer}}/include/python3.12";
-                buildInputs = (old.buildInputs or [ ]) ++ [ final.glibc ];
+                propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
+                  final.python312Packages.gunicorn
+                ];
               });
             }
           );
-        };
 
-        kochanEnv = final.poetry2nix.mkPoetryEnv {
-          projectDir = self;
-          python = final.${pythonVer};
-          editablePackageSources = {
-            kochan = self;
-          };
-          preferWheels = true;
+          postInstall = ''
+            mkdir -p $out/bin
+            cat <<EOF > $out/bin/kochan-server
+            #!${final.bash}/bin/bash
+            exec ${final.python312Packages.gunicorn}/bin/gunicorn \\
+              --workers 4 \\
+              --timeout 120 \\
+              --bind "0.0.0.0:8710" \\
+              "kochan.wsgi:app"
+            EOF
+            chmod +x $out/bin/kochan-server
+          '';
         };
+      };
 
+    in
+    {
+      overlay = final: prev: {
+        kochan = (mkPackage final).kochan;
         poetry = prev.poetry.override { python3 = prev.${pythonVer}; };
       };
 
@@ -90,18 +92,15 @@
       devShells = forAllSystems (pkgs: {
         default = pkgs.mkShellNoCC {
           packages = with pkgs; [
-            kochanEnv
             poetry
             python312Packages.cython
             gcc
             pkg-config
-            python312Packages.setuptools
-            python312Packages.pip
+            python312Packages.gunicorn
           ];
 
           shellHook = ''
-            export PYTHONPATH="${pkgs.kochanEnv}/${pkgs.${pythonVer}.sitePackages}:$PYTHONPATH"
-            export LD_LIBRARY_PATH="${pkgs.glibc}/lib:${pkgs.stdenv.cc.cc.lib}/lib"
+            export PYTHONPATH="$PWD/src:$PYTHONPATH"
             echo "Development environment ready!"
           '';
         };
