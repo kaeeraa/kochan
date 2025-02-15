@@ -15,12 +15,12 @@ def client():
         yield testClient
 
 
-def test_root_route(testClient: FlaskClient):
+def test_root_route(client: FlaskClient):
     """ Test / route
 
     Args:
         testClient (FlaskClient): an test client for Flask
     """
-    response = testClient.get("/")
+    response = client.get("/")
 
     assert response.status_code == 200
