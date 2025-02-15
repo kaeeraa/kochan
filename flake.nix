@@ -55,25 +55,9 @@
                   final.gcc
                   final.pkg-config
                 ];
-                propagatedBuildInputs = (old.propagatedBuildInputs or [ ]) ++ [
-                  final.python312Packages.gunicorn
-                ];
               });
             }
           );
-
-          postInstall = ''
-            mkdir -p $out/bin
-            cat <<EOF > $out/bin/kochan-server
-            #!${final.bash}/bin/bash
-            exec ${final.python312Packages.gunicorn}/bin/gunicorn \\
-              --workers 4 \\
-              --timeout 120 \\
-              --bind "0.0.0.0:8710" \\
-              "kochan.wsgi:app"
-            EOF
-            chmod +x $out/bin/kochan-server
-          '';
         };
       };
 
@@ -96,7 +80,6 @@
             python312Packages.cython
             gcc
             pkg-config
-            python312Packages.gunicorn
           ];
 
           shellHook = ''
