@@ -1,4 +1,3 @@
-
 from kochan.core.app import app
 
 

@@ -1,10 +1,11 @@
+import importlib
+import os
 from sys import stdout
 from types import ModuleType
+
 from flask import Flask
 from jinja2 import FileSystemLoader
 from loguru import logger
-import os
-import importlib
 
 
 def create_app() -> Flask:
@@ -40,10 +41,9 @@ def create_app() -> Flask:
     #   Vars   #
     ############
 
-    routes_dir: str = os.path.join(os.path.dirname(__file__), '..', 'routes')
+    routes_dir: str = os.path.join(os.path.dirname(__file__), "..", "routes")
     static_dir: str = os.path.join(os.path.dirname(__file__), "..", "static")
-    templates_path: str = os.path.join(
-        os.path.dirname(__file__), "..", "templates")
+    templates_path: str = os.path.join(os.path.dirname(__file__), "..", "templates")
 
     ############
     #  Config  #
@@ -54,10 +54,10 @@ def create_app() -> Flask:
     # Change dir with templates
     app.jinja_env.loader = FileSystemLoader(templates_path)
 
-    app.config['SERVER_NAME'] = '0.0.0.0:8710'
-    app.config['APPLICATION_ROOT'] = '/'
-    app.config['STATIC_PATH'] = static_dir
-    app.config['PREFERRED_URL_SCHEME'] = 'http'
+    app.config["SERVER_NAME"] = "0.0.0.0:8710"
+    app.config["APPLICATION_ROOT"] = "/"
+    app.config["STATIC_PATH"] = static_dir
+    app.config["PREFERRED_URL_SCHEME"] = "http"
 
     ############
     #  Routes  #
@@ -66,12 +66,11 @@ def create_app() -> Flask:
     app.logger.info("Configuring routes")
 
     for filename in os.listdir(routes_dir):
-        if filename.endswith('.py') and filename != '__init__.py':
+        if filename.endswith(".py") and filename != "__init__.py":
             module_name: str = filename[:-3]
-            module: ModuleType = importlib.import_module(
-                f'kochan.routes.{module_name}')
-            if hasattr(module, f'{module_name}_bp'):
-                blueprint = getattr(module, f'{module_name}_bp')
+            module: ModuleType = importlib.import_module(f"kochan.routes.{module_name}")
+            if hasattr(module, f"{module_name}_bp"):
+                blueprint = getattr(module, f"{module_name}_bp")
                 app.register_blueprint(blueprint)
 
     return app

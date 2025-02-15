@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, render_template, send_from_directory
+
 from kochan.routes import css_path
 
 index_bp = Blueprint("index", __name__)

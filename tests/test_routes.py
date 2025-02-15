@@ -1,5 +1,6 @@
-from flask.testing import FlaskClient
 import pytest
+from flask.testing import FlaskClient
+
 from kochan.core.app import app
 
 
@@ -10,13 +11,13 @@ def client():
     Yields:
         FlaskClient: an test client for Flask
     """
-    app.config['TESTING'] = True
+    app.config["TESTING"] = True
     with app.test_client() as testClient:
         yield testClient
 
 
 def test_root_route(client: FlaskClient):
-    """ Test / route
+    """Test / route
 
     Args:
         testClient (FlaskClient): an test client for Flask

@@ -1,4 +1,5 @@
 from flask import Blueprint, Response, send_from_directory
+
 from kochan.routes import images_path
 
 favicon_bp = Blueprint("favicon", __name__)
