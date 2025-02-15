@@ -1,8 +1,13 @@
-from flask import Flask
 
-app = Flask(__name__)
+from kochan.core.app import app
 
 
-@app.route("/")
-def hello_world():
-    return "<p>Hello, World of kochan!</p>"
+def run() -> None:
+    app.run(
+        host="0.0.0.0",
+        port=8710,
+    )
+
+
+if __name__ == "__main__":
+    run()
