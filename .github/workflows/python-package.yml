@@ -4,7 +4,9 @@
 name: Build, test and lint
 
 on:
-  push:
+  schedule:
+    - cron: 0 0 * * 0
+
   pull_request:
 
 jobs:
@@ -46,6 +48,8 @@ jobs:
         # Main project python version is 3.12
         if: ${{ matrix.python-version == 3.12 }}
         uses: actions4git/add-commit-push@v1.0.0
+        with:
+          commit-message: "refactor: CI code refactoring"
 
   test:
     runs-on: ubuntu-latest
