@@ -40,6 +40,9 @@ jobs:
         run: |
           poetry run "pylint" "."
 
+      - name: Add, commit, and push
+        uses: actions4git/add-commit-push@v1.0.0
+
   test:
     runs-on: ubuntu-latest
     strategy:
