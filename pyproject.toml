@@ -55,6 +55,8 @@ disable = """
 missing-module-docstring,
 wrong-import-order
 """
+# pytest.fixture causes "redefining variable from outer scope"
+ignore = "tests"
 
 [build-system]
 requires = ["poetry-core>=1.0.0", "setuptools", "Cython"]
