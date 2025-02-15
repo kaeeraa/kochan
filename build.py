@@ -1,9 +1,15 @@
+from typing import Any
 from setuptools import Extension
 from Cython.Build import cythonize  # type: ignore
 from pathlib import Path
 
 
-def build(setup_kwargs):  # type: ignore
+def build(setup_kwargs: Any):
+    """Cython build function
+
+    Args:
+        setup_kwargs (Any): kwargs for setup
+    """
     source_dir = Path("src/kochan")
 
     sources = [

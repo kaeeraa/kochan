@@ -6,4 +6,9 @@ favicon_bp = Blueprint("favicon", __name__)
 
 @favicon_bp.route("/favicon.ico")
 def favicon() -> Response:
+    """Favicon of website
+
+    Returns:
+        Response: file with favicon
+    """
     return send_from_directory(images_path, "favicon.ico")

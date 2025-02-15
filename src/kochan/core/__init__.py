@@ -7,7 +7,12 @@ import os
 import importlib
 
 
-def create_app():
+def create_app() -> Flask:
+    """Generate Flask app
+
+    Returns:
+        Flask: an generated Flask app
+    """
     app = Flask(__name__)
 
     # replace logging with loguru (stonks!!!)
@@ -35,9 +40,10 @@ def create_app():
     #   Vars   #
     ############
 
-    routes_dir = os.path.join(os.path.dirname(__file__), '..', 'routes')
-    static_dir = os.path.join(os.path.dirname(__file__), "..", "static")
-    templates_path = os.path.join(os.path.dirname(__file__), "..", "templates")
+    routes_dir: str = os.path.join(os.path.dirname(__file__), '..', 'routes')
+    static_dir: str = os.path.join(os.path.dirname(__file__), "..", "static")
+    templates_path: str = os.path.join(
+        os.path.dirname(__file__), "..", "templates")
 
     ############
     #  Config  #
