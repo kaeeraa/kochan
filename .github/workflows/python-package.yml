@@ -46,12 +46,21 @@ jobs:
         run: |
           poetry run "pylint" "."
 
-      - name: Add, commit, and push
+      - name: Setup git
+        uses: actions4git/setup-git@v1
+
+      - name: Commit and push changes
         # Main project python version is 3.12
         if: ${{ matrix.python-version == 3.12 }}
-        uses: actions4git/add-commit-push@v1.0.0
-        with:
-          commit-message: "refactor: CI code refactoring"
+        run: |
+          if git diff-index --quiet HEAD --; then
+              echo "Git repo is clean."
+          else
+              echo "Git repo is dirty. Pushing..."
+              git add .
+              git commit -m "refactor: CI code refactoring"
+              git push
+          fi
 
   test:
     runs-on: ubuntu-latest
